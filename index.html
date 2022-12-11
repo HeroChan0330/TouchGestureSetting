@@ -15,16 +15,6 @@
 			var targetDomain = tgGetQueryString("target");
 			document.getElementById("targetDomainText").textContent = targetDomain;
 			
-			
-			// document.getElementsByClassName("g_tgs").addEventListener("toggle",function(event){
-			// 	if(event.detail.isActive){
-			// 	console.log("你启动了开关");
-			// 	}else{
-			// 	console.log("你关闭了开关");  
-			// 	}
-			// 	console.log(event);
-			// });
-			
 			$(".g_tgs").each(function(index,ele){
 				ele.addEventListener("toggle",gtgsToggle);
 			});
@@ -78,8 +68,6 @@
 </head>
 <body>
 	<header class="mui-bar mui-bar-nav">
-		<!-- <a class="mui-icon mui-icon-bars mui-pull-left mui-plus-visible"></a> -->
-		<!-- <a id="info" class="mui-icon mui-icon-info-filled mui-pull-right" style="color: #999;"></a> -->
 		<h1 class="mui-title">TouchGesture设置</h1>
 	</header>
 	<div class="mui-content">
