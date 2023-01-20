@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+	
+      	mui.init();
+		window.onload = function(){
+			// console.log(123);
+			var targetDomain = tgGetQueryString("target");
+			document.getElementById("targetDomainText").textContent = targetDomain;
+			
+			$(".g_tgs").each(function(index,ele){
+				ele.addEventListener("toggle",gtgsToggle);
+			});
+			
+			$(".w_tgs").each(function(index,ele){
+				ele.addEventListener("toggle",wtgsToggle);
+			});
+			
+			function gtgsToggle(event){
+				// console.log(event);
+				globalSetting = {};
+				$(".g_tgs").each(function(index,ele){
+					var val = ele.classList.contains("mui-active");
+					globalSetting[ele.id] = val;
+				});
+				globalSetting["gSelectToastPos"] = $("#gSelectToastPos").text();
+				console.log(globalSetting);
+				$("#globalSettingInput").val(JSON.stringify(globalSetting));
+				
+				
+				// 创建
+				var evt = document.createEvent("HTMLEvents");
+				evt.initEvent("change", false, false);
+				document.getElementById("globalSettingInput").dispatchEvent(evt);
+			}
+			
+			function wtgsToggle(event){
+				// console.log(event);
+				websiteSetting = {};
+				$(".w_tgs").each(function(index,ele){
+					var val = ele.classList.contains("mui-active");
+					websiteSetting[ele.id] = val;
+				});
+				console.log(websiteSetting);
+				$("#websiteSettingInput").val(JSON.stringify(websiteSetting));
+				
+				
+				// 创建
+				var evt = document.createEvent("HTMLEvents");
+				evt.initEvent("change", false, false);
+				document.getElementById("websiteSettingInput").dispatchEvent(evt);
+			}
+			$("#gSelectToastPos").click(function(){
+				if($("#gSelectToastPos").text()=="top"){
+					$("#gSelectToastPos").text("middle");
+				}else if($("#gSelectToastPos").text()=="bottom"){
+					$("#gSelectToastPos").text("top");
+				}else if($("#gSelectToastPos").text()=="middle"){
+					$("#gSelectToastPos").text("bottom");
+				}else{
+					$("#gSelectToastPos").text("middle");
+				}
+				gtgsToggle(null);
+			});
+		}
+		
+		
+		
+		function tgGetQueryString(name) {
+			var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+			var r = window.location.search.substr(1).match(reg);
+			if (r != null) return unescape(r[2]); return null;
+		}
+
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav">
+		<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		<h1 class="mui-title">TouchGesture设置</h1>
+	</header>
+	<div class="mui-content">
+		<div class="mui-card">
+			<ul class="mui-table-view">
+				<li class="mui-table-view-cell mui-collapse  mui-active">
+					<a class="mui-navigate-right" href="#">全局设置</a>
+					<div class="mui-collapse-content">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<span>长按进度显示手势</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchState">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>左右滑调整进度手势</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchProgress">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>左侧上下滑调整亮度手势</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchBrightness">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>右侧上下滑调整音量手势</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchVolume">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>4倍速手势(默认双指)</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchSpeedX4">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>单指4倍速手势</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchSpeedX4Sigle">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>双指左右滑调整速度手势</span>
+								<div class="mui-switch mui-active g_tgs" id = "gSwitchSpeed">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>进度/音量/亮度提示框位置</span>
+								<button type="button" class="mui-btn mui-btn-primary mui-btn-outlined" id="gSelectToastPos">middle</button>
+							</li>
+
+						</ul>
+					</div>
+				</li>
+				<li class="mui-table-view-cell mui-collapse">
+					<a class="mui-navigate-right" href="#">网站设置</a>
+					<div class="mui-collapse-content">
+						<h3>目标网站:<span id="targetDomainText">undefined</span></h3>
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<span>脚本在该网站可用:</span>
+								<div class="mui-switch mui-active w_tgs" id = "wSwitchEnable">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+						</ul>
+						
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell">
+								<span>长按进度显示手势</span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchState">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>左右滑调整进度手势</span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchProgress">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>左侧上下滑调整亮度手势</span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchBrightness">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>右侧上下滑调整音量手势</span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchVolume">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>4倍速手势(默认双指)</span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchSpeedX4">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>单指4倍速手势</span>
+								<div class="mui-switch mui-active mui-switch-blue w_tgs" id = "wSwitchSpeedX4Sigle">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>双指左右滑调整速度手势</span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchSpeed">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+							<li class="mui-table-view-cell">
+								<span>非全屏下不禁止默认逻辑<span class="mui-icon mui-icon-help-filled" style="color: #999;font-size: 18px;padding-left: 3px;" onclick="onForbidScrollQAClick();"></span></span>
+								<div class="mui-switch mui-switch-blue mui-active w_tgs" id = "wSwitchForbidScrollNFS">
+								  <div class="mui-switch-handle"></div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</li>
+			</ul>
+		</div>
+	<p class="mui-text-center">
+		<a onclick="onAboutClick();">关于</a>
+		<a>&nbsp;&nbsp;</a>
+		<a href="https://gitlab.com/HeroChanSysu/touchgesturesetting">开源仓库</a>
+		<a>&nbsp;&nbsp;</a>
+		<a onclick="onClearClick();">恢复默认设置</a>
+		<script>
+			function onAboutClick(){
+				mui.alert("本网页基于开源框架MUI开发，是托管在开源仓库上的静态网页，且不会向任何服务器发送用户信息","关于");
+			}
+			function onClearClick(){
+				mui.toast('恢复默认设置成功',{ duration:'long', type:'div' });
+				var evt = document.createEvent("HTMLEvents");
+				evt.initEvent("change", false, false);
+				document.getElementById("resetSettingInput").dispatchEvent(evt);
+				setTimeout(function(){
+					location.reload();
+				},1000);
+			}
+			function onForbidScrollQAClick(){
+				mui.alert("脚本设计的初衷是为平板设计，希望非全屏状态下播放也能有很好的支持。手机端往往需要全屏播放，但是在视频列表滑动时会被脚本禁止滑动。打开此开关，脚本在该网站只在全屏状态下禁止滑动","关于");
+			}
+		</script>
+	</p>
+	<p>
+		<input type="text" name="globalSetting" id="globalSettingInput" style="display: none;">
+		<input type="text" name="websiteSetting" id="websiteSettingInput" style="display: none;">
+		<input type="text" name="resetSetting" id="resetSettingInput" style="display: none;">
+	</p>
+	</div>
+</body>
+</html>
